@@ -1,41 +1,43 @@
 { inputs, ... }:
 let
-  flakeModule = { self, ... }:
-    let _file = __curPos.file; key = _file; in {
-      inherit _file key;
+  module = { self, ... }: {
+    perSystem = { lib, pkgs, ... }:
+      let
+        flakeRoot = builtins.path { path = self; };
 
-      imports = [ inputs.flake.flakeModules.shells ];
+        recipe = pkgs.writeShellScriptBin "recipe" ''
+          ${lib.getExe pkgs.just} --working-directory . --justfile ${flakeRoot}/justfile $(basename $0) "$@"
+        '';
 
-      perSystem = { lib, pkgs, ... }:
-        let
-          flakeRoot = builtins.path { path = self; };
+        just-aliases = pkgs.runCommand "just-aliases"
+          {
+            src = flakeRoot;
+            buildInputs = with pkgs; [ coreutils findutils gawk just ];
+          } ''
+          mkdir -p $out/bin
+          touch $out/bin/.placeholder # in case no just recipes, ensure output still exists for this derivation
+          if [ -f $src/justfile ]; then
+            just --summary --justfile $src/justfile | xargs -n1 | awk -F: '{print $1}' | uniq | while read -r name; do
+              ln -s ${lib.getExe recipe} $out/bin/$name
+            done
+          else
+            echo "No justfile found in $src"
+          fi
+        '';
+      in
+      {
+        shells.default.packages = [ pkgs.just just-aliases ];
+      };
+  };
 
-          recipe = pkgs.writeShellScriptBin "recipe" ''
-            ${lib.getExe pkgs.just} --working-directory . --justfile ${flakeRoot}/justfile $(basename $0) "$@"
-          '';
-
-          just-aliases = pkgs.runCommand "just-aliases"
-            {
-              src = flakeRoot;
-              buildInputs = with pkgs; [ coreutils findutils gawk just ];
-            } ''
-            mkdir -p $out/bin
-            touch $out/bin/.placeholder # in case no just recipes, ensure output still exists for this derivation
-            if [ -f $src/justfile ]; then
-              just --summary --justfile $src/justfile | xargs -n1 | awk -F: '{print $1}' | uniq | while read -r name; do
-                ln -s ${lib.getExe recipe} $out/bin/$name
-              done
-            else
-              echo "No justfile found in $src"
-            fi
-          '';
-        in
-        {
-          shells.default.packages = [ pkgs.just just-aliases ];
-        };
-    };
+  component = {
+    imports = [
+      module
+      inputs.flake.flakeModules.shells
+      inputs.flake.flakeModules.systems
+    ];
+  };
 in
 {
-  imports = [ inputs.flake.flakeModules.modules ];
-  flake.modules.flake.just = flakeModule;
+  flake.modules.flake.just = component;
 }

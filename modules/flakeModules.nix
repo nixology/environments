@@ -1,13 +1,10 @@
-{ config, inputs, ... }:
+{ config, ... }:
 let
-  localModule =
-    {
-      imports = [ inputs.flake.flakeModules.flakeModules ];
-      # export all flake modules under flake.modules.flake
-      flake.flakeModules = config.flake.modules.flake //
-        { default = config.flake.modules.flake.systems; };
-    };
+  module = {
+    flake.flakeModules = config.flake.modules.flake //
+      { default = config.flake.modules.flake.systems; };
+  };
 in
 {
-  imports = [ localModule ];
+  imports = [ module ];
 }
