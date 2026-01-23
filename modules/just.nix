@@ -31,13 +31,13 @@ let
   };
 
   component = {
-    imports = [
-      module
-      inputs.flake.flakeModules.shells
-      inputs.flake.flakeModules.systems
+    inherit module;
+    dependencies = with inputs.parts; [
+      components.nixology.parts.devShells
     ];
   };
 in
 {
-  flake.modules.flake.just = component;
+  imports = with inputs.parts; [ components.nixology.parts.components ];
+  flake.components.nixology.environments.just = component;
 }
