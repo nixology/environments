@@ -1,15 +1,33 @@
 {
   "nodes": {
+    "flake": {
+      "inputs": {
+        "std": "std"
+      },
+      "locked": {
+        "lastModified": 1773847964,
+        "narHash": "sha256-s1IpN26vx8A0y35FGNJMv8cgfTf8nJFzL0wKz06S24I=",
+        "ref": "refs/heads/main",
+        "rev": "92704f9c9ba67d9b0a403da4dbd747589e89ed67",
+        "revCount": 82,
+        "type": "git",
+        "url": "ssh://git@github.com/marksisson/flake"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/marksisson/flake"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
-        "lastModified": 1769996383,
-        "narHash": "sha256-AnYjnFWgS49RlqX7LrC4uA+sCCDBj0Ry/WOJ5XWAsa0=",
+        "lastModified": 1772408722,
+        "narHash": "sha256-rHuJtdcOjK7rAHpHphUb1iCvgkU3GpfvicLMwwnfMT0=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "57928607ea566b5db3ad13af0e57e921e6b12381",
+        "rev": "f20dc5d9b8027381c474144ecabc9034d6a839a3",
         "type": "github"
       },
       "original": {
@@ -20,40 +38,22 @@
     },
     "nixpkgs-lib": {
       "locked": {
-        "lastModified": 1769909678,
-        "narHash": "sha256-cBEymOf4/o3FD5AZnzC3J9hLbiZ+QDT/KDuyHXVJOpM=",
+        "lastModified": 1772328832,
+        "narHash": "sha256-e+/T/pmEkLP6BHhYjx6GmwP5ivonQQn0bJdH9YrRB+Q=",
         "owner": "nix-community",
         "repo": "nixpkgs.lib",
-        "rev": "72716169fe93074c333e8d0173151350670b824c",
+        "rev": "c185c7a5e5dd8f9add5b2f8ebeff00888b070742",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
         "repo": "nixpkgs.lib",
         "type": "github"
-      }
-    },
-    "parts": {
-      "inputs": {
-        "std": "std"
-      },
-      "locked": {
-        "lastModified": 1772811345,
-        "narHash": "sha256-Lz5jIWxIdjOEMv7prnLF2nrvhJq5fL/DzomH7gYPuIw=",
-        "ref": "refs/heads/main",
-        "rev": "ecb0e428361ed753a416b6113159da899dffb17b",
-        "revCount": 78,
-        "type": "git",
-        "url": "ssh://git@github.com/marksisson/parts"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/marksisson/parts"
       }
     },
     "root": {
       "inputs": {
-        "parts": "parts"
+        "flake": "flake"
       }
     },
     "std": {
@@ -61,11 +61,11 @@
         "flake-parts": "flake-parts"
       },
       "locked": {
-        "lastModified": 1772811284,
-        "narHash": "sha256-z5nuSQavRU/DfOwO28MDXBrGHn0wcYtJ+ZMlKru0xXk=",
+        "lastModified": 1773846264,
+        "narHash": "sha256-aph61ui35tROi29P+ucfkCIkeiJ1f0WbKP89/YYMpEM=",
         "ref": "refs/heads/main",
-        "rev": "fefbdfd3a07f958e4e15120c6873df8ae6819099",
-        "revCount": 32,
+        "rev": "5ec05facbcd2f4681680204c158ab27c7d3873a0",
+        "revCount": 38,
         "type": "git",
         "url": "ssh://git@github.com/marksisson/std"
       },

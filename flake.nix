@@ -1,9 +1,9 @@
 {
   description = "Environments for development and deployment";
 
-  inputs.parts.url = "git+ssh://git@github.com/marksisson/parts";
+  inputs.flake.url = "git+ssh://git@github.com/marksisson/flake";
 
   outputs = inputs:
-    let flakeref = "github:nixology/environments"; in with inputs.parts.lib;
+    let flakeref = "github:nixology/environments"; in with inputs.flake.lib;
     mkFlake { inherit flakeref inputs; } { imports = modulesIn ./modules; };
 }

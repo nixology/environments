@@ -25,22 +25,24 @@ let
           fi
         '';
 
-        packages = [ pkgs.just just-aliases ];
+        env = {
+          packages = [ pkgs.just just-aliases ];
+        };
       in
       {
-        shells.default = { inherit packages; };
-        shells.just = { inherit packages; };
+        environments.just = env;
+        environments.default = env;
       };
   };
 
   component = {
     inherit module;
-    dependencies = with inputs.parts; [
-      components.nixology.parts.devShells
+    dependencies = with inputs.flake.components; [
+      nixology.extra.environments
     ];
   };
 in
 {
   imports = [ module ];
-  flake.components.nixology.environments.just = component;
+  flake.components = { nixology.environments.just = component; };
 }

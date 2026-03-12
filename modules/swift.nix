@@ -1,22 +1,25 @@
 { inputs, ... }:
 let
   module = {
-    perSystem = { pkgs, ... }: with pkgs; let
-      packages = [ swift swiftpm swiftpm2nix sourcekit-lsp ];
+    perSystem = { pkgs, ... }: let
+      env = {
+        packages = with pkgs; [ swift swiftpm swiftpm2nix sourcekit-lsp ];
+        mkShellOverrides = { stdenv = pkgs.stdenv; };
+      };
     in {
-      shells.default = { inherit packages; };
-      shells.swift = { inherit packages; };
+      environments.swift = env;
+      environments.default = env;
     };
   };
 
   component = {
     inherit module;
-    dependencies = with inputs.parts; [
-      components.nixology.parts.devShells
+    dependencies = with inputs.flake.components; [
+      nixology.extra.environments
     ];
   };
 in
 {
   imports = [ module ];
-  flake.components.nixology.environments.swift = component;
+  flake.components = { nixology.environments.swift = component; };
 }

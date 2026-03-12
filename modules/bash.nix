@@ -1,22 +1,24 @@
 { inputs, ... }:
 let
   module = {
-    perSystem = { pkgs, ... }: with pkgs; let
-      packages = [ nodePackages.bash-language-server shellcheck ];
+    perSystem = { pkgs, ... }: let
+      env = {
+        packages = with pkgs; [ nodePackages.bash-language-server shellcheck ];
+      };
     in {
-      shells.default = { inherit packages; };
-      shells.bash = { inherit packages; };
+      environments.bash = env;
+      environments.default = env;
     };
   };
 
   component = {
     inherit module;
-    dependencies = with inputs.parts; [
-      components.nixology.parts.devShells
+    dependencies = with inputs.flake.components; [
+      nixology.extra.environments
     ];
   };
 in
 {
   imports = [ module ];
-  flake.components.nixology.environments.bash = component;
+  flake.components = { nixology.environments.bash = component; };
 }
