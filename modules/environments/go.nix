@@ -2,11 +2,7 @@
 let
   module = {
     perSystem =
-      {
-        lib,
-        pkgs,
-        ...
-      }:
+      { lib, pkgs, ... }:
       {
         shellEnvs.go = {
           packages = with pkgs; [
